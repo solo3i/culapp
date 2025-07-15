@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>حاسبة الضرب</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icon-180x180.png">
+  <meta name="theme-color" content="#007BFF">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f7f7f7;
+      padding: 20px;
+      text-align: right;
+    }
+    h1 {
+      text-align: center;
+    }
+    input, button {
+      padding: 10px;
+      margin: 5px 0;
+      font-size: 16px;
+      width: 100%;
+      direction: ltr;
+      text-align: left;
+    }
+    .buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin: 10px 0;
+    }
+    .buttons button {
+      background-color: #eee;
+      border: 1px solid #ccc;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .buttons button:hover {
+      background-color: #ddd;
+    }
+    .result {
+      background-color: #fff;
+      padding: 10px;
+      margin-top: 10px;
+      border-radius: 6px;
+      border: 1px solid #ddd;
+      cursor: pointer;
+      direction: ltr;
+    }
+    .link-button {
+      display: block;
+      text-align: center;
+      background-color: #007BFF;
+      color: white;
+      padding: 10px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: background-color 0.3s;
+    }
+    .link-button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <h1>حاسبة الضرب</h1>
+
+  <label>أدخل الرقم:</label>
+  <input type="text" id="multiplyInput" inputmode="decimal" pattern="[0-9.]*">
+
+  <div class="buttons">
+    <button onclick="setRate(0.0008)">💧 ماي سكن خاص</button>
+    <button onclick="setRate(0.002)">💧 ماي استثماري</button>
+    <button onclick="setRate(0.0008)">⚡ كهربا سكن خاص</button>
+    <button onclick="setRate(0.005)">⚡ كهربا استثماري</button>
+  </div>
+
+  <button onclick="calculate()">احسب</button>
+
+  <div class="result" id="multiplyResult" style="display: none;" onclick="copyText(this)"></div>
+
+  <a class="link-button" href="index.html">⬅️ العودة إلى حاسبة الفرق الزمني</a>
+
+  <script>
+    let rate = 0;
+
+    function setRate(value) {
+      rate = value;
+    }
+
+    function calculate() {
+      let rawInput = document.getElementById("multiplyInput").value.replace(/[^0-9.]/g, '');
+      let input = parseFloat(rawInput);
+
+      if (isNaN(input)) {
+        alert("يرجى إدخال رقم صالح");
+        return;
+      }
+      if (rate === 0) {
+        alert("يرجى اختيار أو إدخال نسبة أولًا");
+        return;
+      }
+
+      let result = input * rate;
+
+      // نعرض الناتج بدقة 6 خانات بدون حذف
+      const box = document.getElementById("multiplyResult");
+      box.innerText = result.toFixed(6);
+      box.style.display = "block";
+    }
+
+    function copyText(element) {
+      navigator.clipboard.writeText(element.innerText);
+    }
+  </script>
+</body>
+</html>
