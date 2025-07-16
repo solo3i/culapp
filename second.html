@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>حاسبة الضرب</title>
-  <link rel="manifest" href="manifest.json">
-  <link rel="apple-touch-icon" href="icon-180x180.png">
-  <meta name="theme-color" content="#007BFF">
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="icon-180x180.png" />
+  <meta name="theme-color" content="#007BFF" />
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -69,7 +69,7 @@
   <h1>حاسبة الضرب</h1>
 
   <label>أدخل الرقم:</label>
-  <input type="text" id="multiplyInput" inputmode="decimal" pattern="[0-9.]*">
+  <input type="text" id="multiplyInput" inputmode="decimal" pattern="[0-9.]*" />
 
   <div class="buttons">
     <button onclick="setRate(0.0008)">💧 ماي سكن خاص</button>
@@ -105,10 +105,10 @@
       }
 
       let result = input * rate;
+      result = Number.isInteger(result) ? result.toString() : result.toFixed(1); // ✅ ناتج واضح ونظيف
 
-      // نعرض الناتج بدقة 6 خانات بدون حذف
       const box = document.getElementById("multiplyResult");
-      box.innerText = result.toFixed(6);
+      box.innerText = result;
       box.style.display = "block";
     }
 
