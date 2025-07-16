@@ -117,7 +117,6 @@
       background-color: #0056b3;
     }
 
-    /* صف أفقي للعداد الجديد وتاريخ التركيب */
     .horizontal-row {
       display: flex;
       gap: 20px;
@@ -132,7 +131,6 @@
 </head>
 <body>
 
-  <!-- القسم الأيسر -->
   <div id="leftSide">
     <div class="horizontal-row">
       <div>
@@ -170,7 +168,6 @@
     <a class="link-button" href="second.html">🔁 الانتقال إلى حاسبة الضرب</a>
   </div>
 
-  <!-- القسم الأيمن -->
   <div id="rightSide">
     <label>من:</label>
     <input type="text" id="rightFromDate" placeholder="yyyy-mm-dd">
@@ -195,37 +192,30 @@
   </div>
 
   <script>
-    // تحويل نص الى تاريخ مع التحقق من صحة
     function parseDate(text) {
       const parts = text.trim().split("-");
       if(parts.length !== 3) return null;
       const [y,m,d] = parts.map(p => parseInt(p, 10));
       if (!y || !m || !d) return null;
-      // بسيط: تحقق من قيم الأشهر والأيام
-      if(m < 1 || m > 12) return null;
-      if(d < 1 || d > 31) return null;
+      if(m < 1 || m > 12 || d < 1 || d > 31) return null;
       const date = new Date(y, m-1, d);
       if(date.getFullYear() !== y || date.getMonth() !== m-1 || date.getDate() !== d) return null;
       return date;
     }
 
-    // تعيين تاريخ اليوم كنص yyyy-mm-dd
     const today = new Date();
     const yyyy = today.getFullYear();
     const mm = String(today.getMonth() + 1).padStart(2, '0');
     const dd = String(today.getDate()).padStart(2, '0');
     const todayStr = `${yyyy}-${mm}-${dd}`;
 
-    // تعيين تواريخ اليوم افتراضياً في الحقول
-    const dateFields = ["startDate", "endDate", "rightFromDate", "rightToDate"];
-    dateFields.forEach(id => {
+    ["startDate", "endDate", "rightFromDate", "rightToDate"].forEach(id => {
       const el = document.getElementById(id);
       if(el.value.trim() === "") {
         el.value = todayStr;
       }
     });
 
-    // حساب الفرق الزمني (اليسار)
     function calculateDifference() {
       const startInput = document.getElementById("startDate").value;
       const endInput = document.getElementById("endDate").value;
@@ -251,7 +241,6 @@
       document.getElementById("diffResults").style.display = "block";
     }
 
-    // حساب القسمة (اليسار)
     function calculateDivision() {
       const input = parseFloat(document.getElementById("divisionInput").value);
       const daysText = document.getElementById("days").innerText;
@@ -272,13 +261,15 @@
       box.style.display = "block";
     }
 
-    // نسخ النص عند الضغط (اليسار)
     function copyText(element) {
       const text = element.innerText.split("\n")[1] || element.innerText;
       navigator.clipboard.writeText(text);
     }
 
-    // تحديث الحسابات في الجزء الأيمن تلقائيًا
+    function trimZeros(n) {
+      return parseFloat(n).toString();
+    }
+
     function updateRightSideCalculations() {
       const fromDateInput = document.getElementById("rightFromDate").value;
       const toDateInput = document.getElementById("rightToDate").value;
@@ -295,7 +286,6 @@
 
       let days = Math.floor((toDate - fromDate) / (1000 * 60 * 60 * 24));
       if (days < 0) days = 0;
-      if (isNaN(days)) days = 0;
 
       document.getElementById("rightDaysCount").value = days || "";
 
@@ -309,19 +299,16 @@
       }
 
       const consumption = average * days;
-      document.getElementById("consumption").value = consumption.toFixed(2);
-
       const replacement = lastReading + consumption;
-      document.getElementById("replacementReading").value = replacement.toFixed(2);
+
+      document.getElementById("consumption").value = trimZeros(consumption);
+      document.getElementById("replacementReading").value = trimZeros(replacement);
     }
 
-    // ربط أحداث التغيير في الجزء الأيمن
-    const rightFields = ["rightFromDate", "rightToDate", "lastCorrectReading", "average"];
-    rightFields.forEach(id => {
+    ["rightFromDate", "rightToDate", "lastCorrectReading", "average"].forEach(id => {
       document.getElementById(id).addEventListener("input", updateRightSideCalculations);
     });
 
-    // تحديث أولي للجزء الأيمن
     updateRightSideCalculations();
   </script>
 </body>
