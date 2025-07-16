@@ -57,6 +57,23 @@
     .link-button:hover {
       background-color: #0056b3;
     }
+
+    /* بوكس الملاحظات */
+    #noteBox {
+      position: fixed;
+      bottom: 10px;
+      right: 10px;
+      width: 250px;
+      height: 120px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      resize: none;
+      font-size: 14px;
+      background-color: #fff;
+      box-shadow: 0 0 5px rgba(0,0,0,0.2);
+      z-index: 1000;
+    }
   </style>
 </head>
 <body>
@@ -86,6 +103,9 @@
   </div>
 
   <a class="link-button" href="second.html">🔁 الانتقال إلى حاسبة الضرب</a>
+
+  <!-- بوكس الملاحظات -->
+  <textarea id="noteBox" placeholder="اكتب ملاحظاتك هنا..."></textarea>
 
   <script>
     // تعيين تاريخ اليوم تلقائيًا
@@ -125,7 +145,7 @@
       }
 
       let result = input / days;
-      result = Number.isInteger(result) ? result.toString() : result.toFixed(1); // ✅ بدون أصفار زايدة
+      result = Number.isInteger(result) ? result.toString() : result.toFixed(1);
 
       const box = document.getElementById("divisionResult");
       box.innerText = result;
