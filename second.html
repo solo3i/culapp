@@ -105,10 +105,15 @@
       }
 
       let result = input * rate;
-      result = Number.isInteger(result) ? result.toString() : result.toFixed(1); // ✅ ناتج واضح ونظيف
+
+      // تحويل الناتج إلى نص مع إزالة أصفار النهاية في الجزء العشري فقط
+      let resultStr = result.toString();
+      if (resultStr.indexOf('.') !== -1) {
+        resultStr = resultStr.replace(/\.?0+$/, '');
+      }
 
       const box = document.getElementById("multiplyResult");
-      box.innerText = result;
+      box.innerText = resultStr;
       box.style.display = "block";
     }
 
