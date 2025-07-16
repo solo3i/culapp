@@ -14,104 +14,157 @@
     body {
       font-family: Arial, sans-serif;
       background-color: #f7f7f7;
+      margin: 0;
       padding: 20px;
       direction: rtl;
       text-align: right;
+      height: 100vh;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: row;
+      gap: 20px;
     }
+    /* الحاوية اليسارية للنصوص */
+    #leftSide {
+      width: 50%;
+      padding-right: 20px;
+      overflow-y: auto;
+      box-sizing: border-box;
+    }
+    /* الحاوية اليمنى للنموذج الجديد */
+    #rightSide {
+      width: 50%;
+      background-color: #eaeaea;
+      border-radius: 10px;
+      margin-left: 20px;
+      padding: 20px;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
     h1 {
       text-align: center;
     }
-    input, button {
-      padding: 10px;
-      margin: 5px 0;
-      font-size: 16px;
-      width: 100%;
+    label {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 5px;
     }
-    .result {
+    input[type="date"], input[type="number"] {
+      width: 100%;
+      padding: 8px 10px;
+      font-size: 16px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+    }
+    input[readonly] {
+      background-color: #ddd;
+    }
+    .row {
+      display: flex;
+      gap: 10px;
+    }
+    .column {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .resultBox {
       background-color: #fff;
       padding: 10px;
-      margin-top: 10px;
       border-radius: 6px;
       border: 1px solid #ddd;
-      cursor: pointer;
-    }
-    .notice {
-      color: red;
-      font-size: 14px;
-      margin-top: 5px;
-    }
-    .section {
-      margin-bottom: 20px;
-    }
-    .link-button {
-      display: block;
+      font-size: 16px;
+      min-height: 40px;
+      box-sizing: border-box;
       text-align: center;
-      background-color: #007BFF;
-      color: white;
-      padding: 10px;
-      border-radius: 8px;
-      text-decoration: none;
-      font-weight: bold;
-      transition: background-color 0.3s;
-    }
-    .link-button:hover {
-      background-color: #0056b3;
-    }
-
-    /* مربع الملاحظات */
-    #noteBox {
-      position: fixed;
-      top: 10px;
-      right: 10px;
-      width: 300px;
-      height: 80px;
-      padding: 10px;
-      border: none;
-      border-radius: 10px;
-      resize: none;
-      font-size: 14px;
-      background-color: #ffffffdd;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-      z-index: 1000;
-      outline: none;
     }
   </style>
 </head>
 <body>
-  <h1>حاسبة الفرق الزمني</h1>
 
-  <div class="section">
-    <label>من:</label>
-    <input type="date" id="startDate" />
-    <label>إلى:</label>
-    <input type="date" id="endDate" />
-    <button onclick="calculateDifference()">عدد الأيام</button>
-    <div class="notice" id="diffNotice"></div>
+  <!-- نصف الشاشة اليسار -->
+  <div id="leftSide">
+    <h1>حاسبة الفرق الزمني</h1>
+
+    <div class="section">
+      <label>من:</label>
+      <input type="date" id="startDate" />
+      <label>إلى:</label>
+      <input type="date" id="endDate" />
+      <button onclick="calculateDifference()">عدد الأيام</button>
+      <div class="notice" id="diffNotice"></div>
+    </div>
+
+    <div class="section" id="diffResults" style="display: none;">
+      <div class="result" onclick="copyText(this)">عدد السنوات<br><b id="years"></b></div>
+      <div class="result" onclick="copyText(this)">عدد الشهور<br><b id="months"></b></div>
+      <div class="result" onclick="copyText(this)">عدد الأيام<br><b id="days"></b></div>
+    </div>
+
+    <div class="section">
+      <label>عدل الاستهلاك:</label>
+      <input type="number" id="divisionInput" />
+      <button onclick="calculateDivision()">احسب المتوسط</button>
+      <div class="result" id="divisionResult" style="display: none;" onclick="copyText(this)"></div>
+      <div class="notice" id="divNotice"></div>
+    </div>
+
+    <a class="link-button" href="second.html">🔁 الانتقال إلى حاسبة الضرب</a>
   </div>
 
-  <div class="section" id="diffResults" style="display: none;">
-    <div class="result" onclick="copyText(this)">عدد السنوات<br><b id="years"></b></div>
-    <div class="result" onclick="copyText(this)">عدد الشهور<br><b id="months"></b></div>
-    <div class="result" onclick="copyText(this)">عدد الأيام<br><b id="days"></b></div>
-  </div>
+  <!-- نصف الشاشة اليمين -->
+  <div id="rightSide">
+    <div class="column">
+      <label for="rightFromDate">من:</label>
+      <input type="date" id="rightFromDate" />
+    </div>
+    <div class="column">
+      <label for="rightToDate">إلى:</label>
+      <input type="date" id="rightToDate" />
+    </div>
 
-  <div class="section">
-    <label>عدل الاستهلاك:</label>
-    <input type="number" id="divisionInput" />
-    <button onclick="calculateDivision()">احسب المتوسط</button>
-    <div class="result" id="divisionResult" style="display: none;" onclick="copyText(this)"></div>
-    <div class="notice" id="divNotice"></div>
-  </div>
+    <div class="resultBox" id="rightDaysCount" style="font-weight:bold; font-size:18px; text-align:center;">
+      عدد الأيام: 0
+    </div>
 
-  <a class="link-button" href="second.html">🔁 الانتقال إلى حاسبة الضرب</a>
+    <div class="row">
+      <div class="column">
+        <label for="lastCorrectReading">آخر قراءة صحيحة:</label>
+        <input type="number" id="lastCorrectReading" value="0" />
+      </div>
+      <div class="column">
+        <label for="average">المتوسط:</label>
+        <input type="number" id="average" value="0" readonly />
+      </div>
+    </div>
+
+    <div class="column">
+      <label for="consumption">الاستهلاك:</label>
+      <input type="number" id="consumption" readonly />
+    </div>
+
+    <div class="column">
+      <label for="replacementReading">القراءة عند الاستبدال:</label>
+      <input type="number" id="replacementReading" />
+    </div>
+  </div>
 
   <!-- مربع الملاحظات -->
   <textarea id="noteBox" placeholder="اكتب ملاحظاتك هنا..."></textarea>
 
   <script>
-    // تعيين تاريخ اليوم تلقائيًا
+    // تعيين تاريخ اليوم تلقائيًا في اليسار
     document.getElementById("startDate").value = new Date().toISOString().split('T')[0];
 
+    // تعيين تاريخ اليوم تلقائيًا في اليمين أيضًا
+    document.getElementById("rightFromDate").value = new Date().toISOString().split('T')[0];
+    document.getElementById("rightToDate").value = new Date().toISOString().split('T')[0];
+
+    // وظيفة حساب الفرق وعدد الأيام في اليسار
     function calculateDifference() {
       const start = new Date(document.getElementById("startDate").value);
       const end = new Date(document.getElementById("endDate").value);
@@ -134,6 +187,7 @@
       document.getElementById("diffResults").style.display = "block";
     }
 
+    // وظيفة حساب المتوسط في اليسار
     function calculateDivision() {
       const input = parseFloat(document.getElementById("divisionInput").value);
       const days = parseFloat(document.getElementById("days").innerText);
@@ -153,10 +207,68 @@
       box.style.display = "block";
     }
 
+    // وظيفة نسخ النص
     function copyText(element) {
       const text = element.innerText.split("\n")[1] || element.innerText;
       navigator.clipboard.writeText(text);
     }
+
+    // ********* الجزء اليمين: العمليات الحسابية والتحديث التلقائي *********
+
+    // دالة لحساب الفرق بالأيام بين تاريخين
+    function calculateDaysRight() {
+      const fromDate = new Date(document.getElementById("rightFromDate").value);
+      const toDate = new Date(document.getElementById("rightToDate").value);
+      if (isNaN(fromDate) || isNaN(toDate)) {
+        document.getElementById("rightDaysCount").innerText = "عدد الأيام: -";
+        updateConsumptionAndAverage(0);
+        return;
+      }
+      const diffTime = toDate - fromDate;
+      if (diffTime < 0) {
+        document.getElementById("rightDaysCount").innerText = "عدد الأيام: 0";
+        updateConsumptionAndAverage(0);
+        return;
+      }
+      const days = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+      document.getElementById("rightDaysCount").innerText = "عدد الأيام: " + days;
+      updateConsumptionAndAverage(days);
+    }
+
+    // دالة تحديث المتوسط والاستهلاك
+    function updateConsumptionAndAverage(days) {
+      const lastReadingInput = document.getElementById("lastCorrectReading");
+      const averageInput = document.getElementById("average");
+      const consumptionInput = document.getElementById("consumption");
+
+      const lastReading = parseFloat(lastReadingInput.value) || 0;
+      const average = parseFloat(averageInput.value) || 0;
+
+      const totalAverage = average * days;
+
+      averageInput.value = totalAverage.toFixed(1);
+      consumptionInput.value = (lastReading + totalAverage).toFixed(1);
+    }
+
+    // أحداث تحديث تلقائي عند تغيير أي حقل في اليمين
+    document.getElementById("rightFromDate").addEventListener("change", calculateDaysRight);
+    document.getElementById("rightToDate").addEventListener("change", calculateDaysRight);
+    document.getElementById("lastCorrectReading").addEventListener("input", () => {
+      const daysText = document.getElementById("rightDaysCount").innerText;
+      const days = parseInt(daysText.replace(/\D/g, "")) || 0;
+      updateConsumptionAndAverage(days);
+    });
+    document.getElementById("average").addEventListener("input", () => {
+      const daysText = document.getElementById("rightDaysCount").innerText;
+      const days = parseInt(daysText.replace(/\D/g, "")) || 0;
+      updateConsumptionAndAverage(days);
+    });
+
+    // بدء التهيئة عند تحميل الصفحة
+    window.addEventListener("load", () => {
+      calculateDaysRight();
+    });
+
   </script>
 </body>
 </html>
