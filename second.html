@@ -50,6 +50,10 @@
       border: 1px solid #ddd;
       cursor: pointer;
       direction: ltr;
+      display: flex;
+      justify-content: flex-start;
+      gap: 4px;
+      font-size: 18px;
     }
 
     .link-button {
@@ -62,6 +66,7 @@
       text-decoration: none;
       font-weight: bold;
       transition: background-color 0.3s;
+      margin-top: 20px;
     }
 
     .link-button:hover {
@@ -109,11 +114,10 @@
       }
 
       let result = input * rate;
-      let formatted = result.toFixed(3) + " د.ك";
 
       const box = document.getElementById("multiplyResult");
-      box.innerText = formatted;
-      box.style.display = "block";
+      box.innerHTML = `<span>${result.toFixed(3)}</span> <span style="margin-right: 4px;">د.ك</span>`;
+      box.style.display = "flex";
     }
 
     function copyText(element) {
