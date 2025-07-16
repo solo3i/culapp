@@ -23,6 +23,7 @@
       display: flex;
       flex-direction: row;
       gap: 20px;
+      position: relative; /* عشان مربع الملاحظات يكون absolute بالنسبة للجسم */
     }
     #leftSide {
       width: 50%;
@@ -81,17 +82,6 @@
       box-sizing: border-box;
       text-align: center;
     }
-    #noteBox {
-      margin-top: 20px;
-      font-size: 16px;
-      padding: 8px 10px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-      width: 100%;
-      box-sizing: border-box;
-      height: 40px;
-      resize: none;
-    }
 
     /* أزرار القسم القديم بشكل كبير وعرض كامل */
     button {
@@ -141,9 +131,30 @@
     .link-button:hover {
       background-color: #0056b3;
     }
+
+    /* مربع الملاحظات في الزاوية اليمنى العليا */
+    #noteBoxCorner {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 250px;
+      height: 40px;
+      padding: 8px 10px;
+      font-size: 16px;
+      border-radius: 6px;
+      border: 1px solid #007BFF;
+      resize: none;
+      box-sizing: border-box;
+      background-color: white;
+      direction: rtl;
+      text-align: right;
+    }
   </style>
 </head>
 <body>
+
+  <!-- مربع الملاحظات بالزاوية اليمنى -->
+  <textarea id="noteBoxCorner" placeholder="اكتب ملاحظاتك هنا..."></textarea>
 
   <div id="leftSide">
     <h1>حاسبة الفرق الزمني</h1>
@@ -164,15 +175,13 @@
     </div>
 
     <div class="section">
-      <label>عدل الاستهلاك:</label>
+      <label> الاستهلاك:</label>
       <input type="number" id="divisionInput" />
       <button onclick="calculateDivision()">احسب المتوسط</button>
       <div class="result" id="divisionResult" style="display: none;" onclick="copyText(this)"></div>
       <div class="notice" id="divNotice"></div>
     </div>
 
-    <input type="text" id="noteBox" placeholder="اكتب ملاحظاتك هنا..." />
-    
     <a class="link-button" href="second.html">🔁 الانتقال إلى حاسبة الضرب</a>
   </div>
 
