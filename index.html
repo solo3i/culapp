@@ -20,42 +20,46 @@
     }
 
     #leftSide, #rightSide {
-      width: 50%;
       box-sizing: border-box;
       padding: 40px 20px;
     }
 
     #leftSide {
+      width: 50%;
       display: flex;
       flex-direction: column;
       justify-content: center;
+      gap: 15px;
     }
 
     #rightSide {
+      width: 50%;
       background-color: #eaeaea;
       border-radius: 10px;
       padding: 20px;
       display: flex;
       flex-direction: column;
       gap: 15px;
+      justify-content: center;
     }
 
     label {
       font-weight: bold;
-      margin-top: 10px;
+      margin-bottom: 6px;
       display: block;
     }
 
     input[type="date"],
     input[type="number"],
-    input[type="text"],
-    textarea {
+    input[type="text"] {
       width: 100%;
       padding: 10px;
       font-size: 16px;
       border: 1px solid #ccc;
       border-radius: 6px;
       box-sizing: border-box;
+      direction: ltr;
+      text-align: left;
     }
 
     input[readonly] {
@@ -82,12 +86,12 @@
     .result {
       background-color: #fff;
       padding: 10px;
-      margin-top: 10px;
       border-radius: 6px;
       border: 1px solid #ddd;
       cursor: pointer;
       font-size: 18px;
       text-align: center;
+      direction: ltr;
     }
 
     .notice {
@@ -106,10 +110,23 @@
       text-decoration: none;
       font-weight: bold;
       margin-top: 20px;
+      transition: background-color 0.3s;
     }
 
     .link-button:hover {
       background-color: #0056b3;
+    }
+
+    /* صف أفقي للعداد الجديد وتاريخ التركيب */
+    .horizontal-row {
+      display: flex;
+      gap: 20px;
+    }
+
+    .horizontal-row > div {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
     }
   </style>
 </head>
@@ -117,6 +134,17 @@
 
   <!-- القسم الأيسر -->
   <div id="leftSide">
+    <div class="horizontal-row">
+      <div>
+        <label>عداد جديد</label>
+        <input type="text" id="newCounter" placeholder="اكتب عداد جديد" />
+      </div>
+      <div>
+        <label>تاريخ التركيب</label>
+        <input type="date" id="installationDate" />
+      </div>
+    </div>
+
     <label>من:</label>
     <input type="date" id="startDate">
 
@@ -138,12 +166,6 @@
     <button onclick="calculateDivision()">احسب المتوسط</button>
     <div class="result" id="divisionResult" style="display: none;" onclick="copyText(this)"></div>
     <div class="notice" id="divNotice"></div>
-
-    <label>عداد:</label>
-    <input type="number" id="customCounter" placeholder="اكتب أي رقم تبي">
-
-    <label>ملاحظات:</label>
-    <textarea id="noteBox" placeholder="ملاحظات..." rows="2"></textarea>
 
     <a class="link-button" href="second.html">🔁 الانتقال إلى حاسبة الضرب</a>
   </div>
@@ -212,11 +234,11 @@
         return;
       }
 
-      const result = input / days;
-      const display = Number.isInteger(result) ? result.toString() : result.toFixed(1);
+      let result = input / days;
+      result = Number.isInteger(result) ? result.toString() : result.toFixed(1);
 
       const box = document.getElementById("divisionResult");
-      box.innerText = display;
+      box.innerText = result;
       box.style.display = "block";
     }
 
@@ -224,29 +246,6 @@
       const text = element.innerText.split("\n")[1] || element.innerText;
       navigator.clipboard.writeText(text);
     }
-
-    // الجزء الأيمن - الحسابات التلقائية
-    function updateRightSide() {
-      const from = new Date(document.getElementById("rightFromDate").value);
-      const to = new Date(document.getElementById("rightToDate").value);
-      const days = Math.max(0, Math.floor((to - from) / (1000 * 60 * 60 * 24)));
-
-      document.getElementById("rightDaysCount").value = days;
-
-      const lastReading = parseFloat(document.getElementById("lastCorrectReading").value) || 0;
-      const average = parseFloat(document.getElementById("average").value) || 0;
-      const consumption = average * days;
-      const replacement = lastReading + consumption;
-
-      document.getElementById("consumption").value = consumption.toFixed(1);
-      document.getElementById("replacementReading").value = replacement.toFixed(1);
-    }
-
-    document.getElementById("rightFromDate").addEventListener("input", updateRightSide);
-    document.getElementById("rightToDate").addEventListener("input", updateRightSide);
-    document.getElementById("lastCorrectReading").addEventListener("input", updateRightSide);
-    document.getElementById("average").addEventListener("input", updateRightSide);
   </script>
-
 </body>
 </html>
