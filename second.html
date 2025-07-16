@@ -14,9 +14,7 @@
       padding: 20px;
       text-align: right;
     }
-    h1 {
-      text-align: center;
-    }
+
     input, button {
       padding: 10px;
       margin: 5px 0;
@@ -25,21 +23,25 @@
       direction: ltr;
       text-align: left;
     }
+
     .buttons {
       display: flex;
       flex-direction: column;
       gap: 8px;
       margin: 10px 0;
     }
+
     .buttons button {
       background-color: #eee;
       border: 1px solid #ccc;
       cursor: pointer;
       transition: 0.2s;
     }
+
     .buttons button:hover {
       background-color: #ddd;
     }
+
     .result {
       background-color: #fff;
       padding: 10px;
@@ -49,6 +51,7 @@
       cursor: pointer;
       direction: ltr;
     }
+
     .link-button {
       display: block;
       text-align: center;
@@ -60,15 +63,15 @@
       font-weight: bold;
       transition: background-color 0.3s;
     }
+
     .link-button:hover {
       background-color: #0056b3;
     }
   </style>
 </head>
 <body>
-  <h1>حاسبة الضرب</h1>
 
- <label>احسب الاستهلاك:</label>
+  <label>احسب الاستهلاك:</label>
   <input type="text" id="multiplyInput" inputmode="decimal" pattern="[0-9.]*" />
 
   <div class="buttons">
@@ -99,21 +102,17 @@
         alert("يرجى إدخال رقم صالح");
         return;
       }
+
       if (rate === 0) {
         alert("يرجى اختيار أو إدخال نسبة أولًا");
         return;
       }
 
       let result = input * rate;
-
-      // تحويل الناتج إلى نص مع إزالة أصفار النهاية في الجزء العشري فقط
-      let resultStr = result.toString();
-      if (resultStr.indexOf('.') !== -1) {
-        resultStr = resultStr.replace(/\.?0+$/, '');
-      }
+      let formatted = result.toFixed(3) + " د.ك";
 
       const box = document.getElementById("multiplyResult");
-      box.innerText = resultStr;
+      box.innerText = formatted;
       box.style.display = "block";
     }
 
