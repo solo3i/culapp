@@ -179,13 +179,13 @@
     <input type="date" id="rightToDate">
 
     <label>عدد الأيام:</label>
-    <input type="text" id="rightDaysCount" readonly value="0">
+    <input type="text" id="rightDaysCount" readonly>
 
     <label>آخر قراءة صحيحة:</label>
-    <input type="number" id="lastCorrectReading" value="0">
+    <input type="number" id="lastCorrectReading" placeholder="أدخل آخر قراءة">
 
     <label>المتوسط:</label>
-    <input type="number" id="average" value="0">
+    <input type="number" id="average" placeholder="أدخل المتوسط">
 
     <label>الاستهلاك:</label>
     <input type="number" id="consumption" readonly>
@@ -195,12 +195,14 @@
   </div>
 
   <script>
-    // تعيين تاريخ اليوم تلقائيًا
+    // تعيين تاريخ اليوم تلقائيًا في الحقول المناسبة
     const today = new Date().toISOString().split('T')[0];
     document.getElementById("startDate").value = today;
+    document.getElementById("endDate").value = today;
     document.getElementById("rightFromDate").value = today;
     document.getElementById("rightToDate").value = today;
 
+    // حساب الفرق الزمني (اليسار)
     function calculateDifference() {
       const start = new Date(document.getElementById("startDate").value);
       const end = new Date(document.getElementById("endDate").value);
@@ -223,9 +225,11 @@
       document.getElementById("diffResults").style.display = "block";
     }
 
+    // حساب القسمة (اليسار)
     function calculateDivision() {
       const input = parseFloat(document.getElementById("divisionInput").value);
-      const days = parseFloat(document.getElementById("days").innerText);
+      const daysText = document.getElementById("days").innerText;
+      const days = parseFloat(daysText);
       const notice = document.getElementById("divNotice");
       notice.innerText = "";
 
@@ -242,10 +246,57 @@
       box.style.display = "block";
     }
 
+    // نسخ النص عند الضغط (اليسار)
     function copyText(element) {
       const text = element.innerText.split("\n")[1] || element.innerText;
       navigator.clipboard.writeText(text);
     }
+
+    // تحديث الحسابات في الجزء الأيمن تلقائيًا
+    function updateRightSideCalculations() {
+      const fromDateValue = document.getElementById("rightFromDate").value;
+      const toDateValue = document.getElementById("rightToDate").value;
+
+      if (!fromDateValue || !toDateValue) {
+        document.getElementById("rightDaysCount").value = "";
+        document.getElementById("consumption").value = "";
+        document.getElementById("replacementReading").value = "";
+        return;
+      }
+
+      const fromDate = new Date(fromDateValue);
+      const toDate = new Date(toDateValue);
+
+      let days = Math.floor((toDate - fromDate) / (1000 * 60 * 60 * 24));
+      if (days < 0) days = 0;
+      if (isNaN(days)) days = 0;
+
+      document.getElementById("rightDaysCount").value = days || "";
+
+      const lastReading = parseFloat(document.getElementById("lastCorrectReading").value);
+      const average = parseFloat(document.getElementById("average").value);
+
+      if (isNaN(lastReading) || isNaN(average)) {
+        document.getElementById("consumption").value = "";
+        document.getElementById("replacementReading").value = "";
+        return;
+      }
+
+      const consumption = average * days;
+      document.getElementById("consumption").value = consumption.toFixed(2);
+
+      const replacement = lastReading + consumption;
+      document.getElementById("replacementReading").value = replacement.toFixed(2);
+    }
+
+    // ربط أحداث التغيير في الجزء الأيمن
+    document.getElementById("rightFromDate").addEventListener("change", updateRightSideCalculations);
+    document.getElementById("rightToDate").addEventListener("change", updateRightSideCalculations);
+    document.getElementById("lastCorrectReading").addEventListener("input", updateRightSideCalculations);
+    document.getElementById("average").addEventListener("input", updateRightSideCalculations);
+
+    // تحديث أولي للجزء الأيمن
+    updateRightSideCalculations();
   </script>
 </body>
 </html>
