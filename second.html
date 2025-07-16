@@ -14,7 +14,9 @@
       padding: 20px;
       text-align: right;
     }
-
+    h1 {
+      text-align: center;
+    }
     input, button {
       padding: 10px;
       margin: 5px 0;
@@ -23,25 +25,21 @@
       direction: ltr;
       text-align: left;
     }
-
     .buttons {
       display: flex;
       flex-direction: column;
       gap: 8px;
       margin: 10px 0;
     }
-
     .buttons button {
       background-color: #eee;
       border: 1px solid #ccc;
       cursor: pointer;
       transition: 0.2s;
     }
-
     .buttons button:hover {
       background-color: #ddd;
     }
-
     .result {
       background-color: #fff;
       padding: 10px;
@@ -49,13 +47,13 @@
       border-radius: 6px;
       border: 1px solid #ddd;
       cursor: pointer;
-      direction: ltr;
-      display: flex;
-      justify-content: flex-start;
-      gap: 4px;
+      direction: rtl; /* لضبط اتجاه النص يمين لليسار */
       font-size: 18px;
+      font-weight: bold;
+      display: inline-block;
+      user-select: all;
+      text-align: left; /* حتى الرقم يظل من اليسار */
     }
-
     .link-button {
       display: block;
       text-align: center;
@@ -66,15 +64,14 @@
       text-decoration: none;
       font-weight: bold;
       transition: background-color 0.3s;
-      margin-top: 20px;
     }
-
     .link-button:hover {
       background-color: #0056b3;
     }
   </style>
 </head>
 <body>
+  <h1>حاسبة الضرب</h1>
 
   <label>احسب الاستهلاك:</label>
   <input type="text" id="multiplyInput" inputmode="decimal" pattern="[0-9.]*" />
@@ -95,6 +92,12 @@
   <script>
     let rate = 0;
 
+    // تحويل الأرقام الإنجليزية إلى عربية
+    function toArabicNumber(num) {
+      const arabicDigits = ['٠','١','٢','٣','٤','٥','٦','٧','٨','٩'];
+      return num.toString().replace(/[0-9]/g, d => arabicDigits[d]);
+    }
+
     function setRate(value) {
       rate = value;
     }
@@ -107,7 +110,6 @@
         alert("يرجى إدخال رقم صالح");
         return;
       }
-
       if (rate === 0) {
         alert("يرجى اختيار أو إدخال نسبة أولًا");
         return;
@@ -115,9 +117,16 @@
 
       let result = input * rate;
 
+      // تحويل الناتج إلى نص بثلاث خانات عشرية مع حذف أصفار النهاية
+      let resultStr = result.toFixed(3).replace(/\.?0+$/, '');
+
+      // تحويل الأرقام إلى عربية
+      let arabicResult = toArabicNumber(resultStr);
+
+      // عرض الرقم ثم "د.ك" يمينه
       const box = document.getElementById("multiplyResult");
-      box.innerHTML = `<span>${result.toFixed(3)}</span> <span style="margin-right: 4px;">د.ك</span>`;
-      box.style.display = "flex";
+      box.innerHTML = `${arabicResult} <span style="margin-left: 5px;">د.ك</span>`;
+      box.style.display = "block";
     }
 
     function copyText(element) {
