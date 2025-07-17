@@ -2,132 +2,166 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>حاسبة الضرب</title>
-  <link rel="manifest" href="manifest.json" />
-  <link rel="apple-touch-icon" href="icon-180x180.png" />
-  <meta name="theme-color" content="#007BFF" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>حاسبة النسبة</title>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
-      font-family: Arial, sans-serif;
-      background-color: #f7f7f7;
+      margin: 0;
+      height: 100vh;
+      font-family: 'Tajawal', sans-serif;
+      background-color: #101820;
+      color: #ffffff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      gap: 20px;
       padding: 20px;
-      text-align: right;
     }
-    /* لا تغييرات في التنسيق */
-    input, button {
-      padding: 10px;
-      margin: 5px 0;
-      font-size: 16px;
-      width: 100%;
-      direction: ltr;
-      text-align: left;
-    }
-    .buttons {
+
+    .container {
+      text-align: center;
       display: flex;
       flex-direction: column;
+      align-items: center;
+      gap: 25px;
+      width: 100%;
+      max-width: 450px;
+      padding: 0 15px;
+    }
+
+    label {
+      font-size: 1.4em;
+    }
+
+    input {
+      padding: 15px;
+      font-size: 1.4em;
+      width: 100%;
+      border: 1px solid #333;
+      border-radius: 10px;
+      background-color: #1e1e1e;
+      color: #fff;
+      text-align: center;
+    }
+
+    .button-row {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      width: 100%;
+    }
+
+    button {
+      flex: 1;
+      padding: 16px 0;
+      font-size: 1.3em;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      background-color: #00acc1;
+      color: #fff;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       gap: 8px;
-      margin: 10px 0;
     }
-    .buttons button {
-      background-color: #eee;
-      border: 1px solid #ccc;
-      cursor: pointer;
-      transition: 0.2s;
+
+    button:hover {
+      transform: scale(1.05);
+      background-color: #008b9a;
     }
-    .buttons button:hover {
-      background-color: #ddd;
-    }
-    .result {
-      background-color: #fff;
-      padding: 10px;
+
+    #result {
       margin-top: 10px;
-      border-radius: 6px;
-      border: 1px solid #ddd;
-      cursor: pointer;
-      direction: rtl; /* لضبط اتجاه النص يمين لليسار */
-      font-size: 18px;
-      font-weight: bold;
-      display: inline-block;
-      user-select: all;
-      text-align: left; /* حتى الرقم يظل من اليسار */
+      font-size: 1.6em;
+      color: #4caf50;
+      min-height: 1.5em;
     }
+
     .link-button {
       display: block;
-      text-align: center;
+      width: 100%;
+      max-width: 450px;
       background-color: #007BFF;
       color: white;
-      padding: 10px;
+      padding: 14px;
       border-radius: 8px;
-      text-decoration: none;
       font-weight: bold;
-      transition: background-color 0.3s;
+      text-align: center;
+      text-decoration: none;
+      font-size: 1.3em;
+      transition: background-color 0.3s, transform 0.3s;
+      user-select: none;
     }
+
     .link-button:hover {
       background-color: #0056b3;
+      transform: scale(1.03);
     }
+
+    .clear-button {
+      background-color: #e53935;
+    }
+
+    .clear-button:hover {
+      background-color: #c62828;
+    }
+
   </style>
 </head>
 <body>
+  <div class="container">
+    <label for="value">أدخل الاستهلاك</label>
+    <input type="number" id="value" placeholder="أدخل القيمة">
 
-  <label>احسب الاستهلاك:</label>
-  <input type="text" id="multiplyInput" inputmode="decimal" pattern="[0-9.]*" />
+    <div class="button-row">
+      <button onclick="calculate(0.0008)">💧 ماي سكني</button>
+      <button onclick="calculate(0.002)">⚡ كهربا سكني</button>
+    </div>
+    <div class="button-row">
+      <button onclick="calculate(0.002)">💧 ماي استثماري</button>
+      <button onclick="calculate(0.005)">⚡ كهربا استثماري</button>
+    </div>
+    <div class="button-row">
+      <button class="clear-button" onclick="clearFields()"><i class="fas fa-broom"></i> مسح الحقول</button>
+    </div>
 
-  <div class="buttons">
-    <button onclick="setRate(0.0008)">💧 ماي سكن خاص</button>
-    <button onclick="setRate(0.002)">💧 ماي استثماري</button>
-    <button onclick="setRate(0.0008)">⚡ كهربا سكن خاص</button>
-    <button onclick="setRate(0.005)">⚡ كهربا استثماري</button>
+    <div id="result"></div>
+
+    <a href="index.html" class="link-button">🔁 الانتقال إلى الصفحة الرئيسية</a>
   </div>
 
-  <button onclick="calculate()">احسب</button>
-
-  <div class="result" id="multiplyResult" style="display: none;" onclick="copyText(this)"></div>
-
-  <a class="link-button" href="index.html">⬅️ العودة إلى حاسبة الفرق الزمني</a>
-
   <script>
-    let rate = 0;
-
-    // تحويل الأرقام الإنجليزية إلى عربية
-    function toArabicNumber(num) {
+    function convertToArabicNumbers(str) {
       const arabicDigits = ['٠','١','٢','٣','٤','٥','٦','٧','٨','٩'];
-      return num.toString().replace(/[0-9]/g, d => arabicDigits[d]);
+      return str.replace(/\d/g, d => arabicDigits[d]);
     }
 
-    function setRate(value) {
-      rate = value;
-    }
-
-    function calculate() {
-      let rawInput = document.getElementById("multiplyInput").value.replace(/[^0-9.]/g, '');
-      let input = parseFloat(rawInput);
-
-      if (isNaN(input)) {
-        alert("يرجى إدخال رقم صالح");
-        return;
-      }
-      if (rate === 0) {
-        alert("يرجى اختيار أو إدخال نسبة أولًا");
+    function calculate(rate) {
+      const value = parseFloat(document.getElementById('value').value);
+      const resultBox = document.getElementById('result');
+      if (isNaN(value)) {
+        resultBox.textContent = "يرجى إدخال رقم صحيح";
         return;
       }
 
-      let result = input * rate;
-
-      // تحويل الناتج إلى نص بثلاث خانات عشرية مع حذف أصفار النهاية
-      let resultStr = result.toFixed(3).replace(/\.?0+$/, '');
-
-      // تحويل الأرقام إلى عربية
-      let arabicResult = toArabicNumber(resultStr);
-
-      // عرض الرقم ثم "د.ك" يمينه
-      const box = document.getElementById("multiplyResult");
-      box.innerHTML = `${arabicResult} <span style="margin-left: 5px;">د.ك</span>`;
-      box.style.display = "block";
+      const result = value * rate;
+      const clean = result % 1 === 0 ? result.toString() : result.toFixed(3).replace(/0+$/, '').replace(/\.$/, '');
+      const arabicNumber = convertToArabicNumbers(clean);
+      resultBox.textContent = `الناتج: ${arabicNumber} د.ك`;
     }
 
-    function copyText(element) {
-      navigator.clipboard.writeText(element.innerText);
+    function clearFields() {
+      document.getElementById('value').value = "";
+      document.getElementById('result').textContent = "";
     }
   </script>
 </body>
