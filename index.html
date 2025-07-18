@@ -221,7 +221,8 @@
         return;
       }
       const diffTime = Math.abs(end - start);
-      const days = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+      let days = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+      if (days > 33) days = 33;  // قفل الأيام بـ33 كحد أقصى
       const months = Math.floor(days / 30);
       const years = Math.floor(days / 365);
       document.getElementById("days").innerText = days;
@@ -323,6 +324,4 @@
       const input = document.getElementById(id);
       formatDateInput(input);
     });
-  </script>
-</body>
-</html>
+  </script
