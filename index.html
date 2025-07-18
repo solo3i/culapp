@@ -221,8 +221,7 @@
         return;
       }
       const diffTime = Math.abs(end - start);
-      let days = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-      if (days > 33) days = 33;  // قفل الأيام بـ33 كحد أقصى
+      const days = Math.floor(diffTime / (1000 * 60 * 60 * 24));
       const months = Math.floor(days / 30);
       const years = Math.floor(days / 365);
       document.getElementById("days").innerText = days;
@@ -300,19 +299,16 @@
         if (val.length > 8) val = val.slice(0, 8);
         let formatted = "";
         if (val.length >= 2) {
-          formatted = val.slice(0, 2) + "-";
+          formatted = val.slice(0, 2);
           if (val.length >= 4) {
             let month = parseInt(val.slice(2, 4), 10);
             if (month > 12) month = 12;
-            formatted += String(month).padStart(2, "0") + "-";
-            formatted += val.slice(4);
-          } else {
-            let month = val.slice(2);
-            if (month.length === 1 && parseInt(month) > 1) {
-              formatted += "0" + month + "-";
-            } else {
-              formatted += month;
+            formatted += "-" + String(month).padStart(2, "0");
+            if (val.length > 4) {
+              formatted += "-" + val.slice(4);
             }
+          } else {
+            formatted += "-" + val.slice(2);
           }
         } else {
           formatted = val;
@@ -324,4 +320,6 @@
       const input = document.getElementById(id);
       formatDateInput(input);
     });
-  </script
+  </script>
+</body>
+</html>
