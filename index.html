@@ -297,22 +297,40 @@
       input.addEventListener("input", () => {
         let val = input.value.replace(/\D/g, "");
         if (val.length > 8) val = val.slice(0, 8);
-        let formatted = "";
-        if (val.length >= 2) {
-          formatted = val.slice(0, 2);
-          if (val.length >= 4) {
-            let month = parseInt(val.slice(2, 4), 10);
-            if (month > 12) month = 12;
-            formatted += "-" + String(month).padStart(2, "0");
-            if (val.length > 4) {
-              formatted += "-" + val.slice(4);
-            }
-          } else {
-            formatted += "-" + val.slice(2);
+
+        let day = "";
+        let month = "";
+        let year = "";
+
+        if (val.length >= 1) {
+          day = val.slice(0, 1);
+          // إذا الرقم مفرد واليوم أكبر من 3 (لأن أكبر رقم ممكن بالبداية 3 فقط ليوم 31)
+          if (parseInt(day, 10) > 3) {
+            day = "0" + day; // "6" تصبح "06"
           }
-        } else {
-          formatted = val;
         }
+        if (val.length >= 2) {
+          day = val.slice(0, 2);
+          if (parseInt(day, 10) > 31) day = "31"; // لا يتجاوز 31
+        }
+        if (val.length >= 3) {
+          month = val.slice(2, 3);
+          if (parseInt(month, 10) > 1) {
+            month = "0" + month; // "5" تصبح "05"
+          }
+        }
+        if (val.length >= 4) {
+          month = val.slice(2, 4);
+          if (parseInt(month, 10) > 12) month = "12"; // لا يتجاوز 12
+        }
+        if (val.length > 4) {
+          year = val.slice(4);
+        }
+
+        let formatted = day;
+        if (month) formatted += "-" + month;
+        if (year) formatted += "-" + year;
+
         input.value = formatted;
       });
     }
