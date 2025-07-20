@@ -152,28 +152,32 @@
       transform: scale(1.03);
     }
 
-    /* الطباعة - منع تقسيم الصفحات، عرض عمودي مع landscape */
+    /* الطباعة */
     @page {
       size: landscape;
-      margin: 10mm;
+      margin: 5mm;
     }
     @media print {
       body {
         display: block !important;
         height: auto !important;
-        gap: 0 !important;
         font-size: 12pt !important;
         color: black !important;
         background: white !important;
+        transform: scale(0.85);
+        transform-origin: top right;
       }
       #leftSide, #rightSide {
-        width: 100% !important;
+        display: inline-block !important;
+        vertical-align: top;
+        width: 48% !important;
         padding: 0 !important;
-        margin: 0 0 1em 0 !important;
+        margin: 0 !important;
         background: none !important;
         border-radius: 0 !important;
         page-break-inside: avoid !important;
         break-inside: avoid !important;
+        float: right;
       }
       * {
         page-break-inside: avoid !important;
@@ -231,6 +235,7 @@
     <button id="clearFieldsBtnRight" onclick="clearFieldsRight()"><i class="fas fa-broom"></i> مسح الحقول</button>
   </div>
   <script>
+    // نفس السكريبتات السابقة
     function parseDate(text) {
       const parts = text.trim().split("-");
       if(parts.length !== 3) return null;
