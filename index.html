@@ -135,9 +135,7 @@
     .icon-label i {
       margin-left: 6px;
       color: var(--primary);
-
-      /* تم تصغير الأيقونات هنا */
-      font-size: 0.85em;
+      font-size: 0.85em; /* تصغير الأيقونات */
     }
     #clearFieldsBtn, #clearFieldsBtnRight {
       background-color: var(--error);
@@ -152,6 +150,31 @@
     #clearFieldsBtn:hover, #clearFieldsBtnRight:hover {
       background-color: var(--error-hover);
       transform: scale(1.03);
+    }
+
+    /* الطباعة - منع تقسيم الصفحات، عرض عمودي */
+    @media print {
+      body {
+        display: block !important;
+        height: auto !important;
+        gap: 0 !important;
+        font-size: 12pt !important;
+        color: black !important;
+        background: white !important;
+      }
+      #leftSide, #rightSide {
+        width: 100% !important;
+        padding: 0 !important;
+        margin-bottom: 1em;
+        background: none !important;
+        border-radius: 0 !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+      }
+      * {
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+      }
     }
   </style>
 </head>
@@ -307,24 +330,23 @@
 
         if (val.length >= 1) {
           day = val.slice(0, 1);
-          // إذا الرقم مفرد واليوم أكبر من 3 (لأن أكبر رقم ممكن بالبداية 3 فقط ليوم 31)
           if (parseInt(day, 10) > 3) {
-            day = "0" + day; // "6" تصبح "06"
+            day = "0" + day;
           }
         }
         if (val.length >= 2) {
           day = val.slice(0, 2);
-          if (parseInt(day, 10) > 31) day = "31"; // لا يتجاوز 31
+          if (parseInt(day, 10) > 31) day = "31";
         }
         if (val.length >= 3) {
           month = val.slice(2, 3);
           if (parseInt(month, 10) > 1) {
-            month = "0" + month; // "5" تصبح "05"
+            month = "0" + month;
           }
         }
         if (val.length >= 4) {
           month = val.slice(2, 4);
-          if (parseInt(month, 10) > 12) month = "12"; // لا يتجاوز 12
+          if (parseInt(month, 10) > 12) month = "12";
         }
         if (val.length > 4) {
           year = val.slice(4);
