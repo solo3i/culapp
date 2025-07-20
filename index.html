@@ -183,15 +183,20 @@
       #uploadedImageContainer {
         display: block !important;
         margin-top: 10px;
-        max-width: 80% !important; /* زيادة حجم الصورة في الطباعة */
+        max-width: 80% !important;
         height: auto !important;
         page-break-inside: avoid !important;
         break-inside: avoid !important;
+        text-align: right;
       }
       #uploadedImageContainer img {
         max-width: 100% !important;
         height: auto !important;
         image-rendering: crisp-edges !important;
+        float: right;
+        border-radius: 8px;
+        margin-left: 12px;
+        margin-bottom: 12px;
       }
       /* اخفاء أزرار المسح والانتقال */
       #clearFieldsBtn,
@@ -257,7 +262,7 @@
     <!-- زر رفع الصورة -->
     <label class="icon-label" id="uploadLabel" style="margin-top: 20px;"><i class="fas fa-upload"></i> رفع صورة:</label>
     <input type="file" id="imageUpload" accept="image/*" />
-    <div id="uploadedImageContainer" style="margin-top: 12px; text-align: center;"></div>
+    <div id="uploadedImageContainer" style="margin-top: 12px;"></div>
   </div>
 
   <script>
@@ -365,6 +370,7 @@
       if(!file) return;
       if(!file.type.startsWith('image/')) {
         alert('الرجاء اختيار ملف صورة صالح');
+        this.value = "";
         return;
       }
       const maxSizeMB = 20;
@@ -382,6 +388,10 @@
         img.style.height = "auto";
         img.style.marginTop = "12px";
         img.style.imageRendering = "crisp-edges";
+        img.style.float = "right";
+        img.style.borderRadius = "8px";
+        img.style.marginLeft = "12px";
+        img.style.marginBottom = "12px";
         const container = document.getElementById('uploadedImageContainer');
         container.innerHTML = '';
         container.appendChild(img);
