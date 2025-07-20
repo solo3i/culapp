@@ -149,57 +149,56 @@
     #clearFieldsBtn:hover, #clearFieldsBtnRight:hover {
       background-color: var(--error-hover);
       transform: scale(1.03);
+    }  <style>
+    :root {
+      --primary: #007acc;
+      --primary-hover: #005a9e;
+      --background: #1c1c1c;
+      --panel: #2a2a2a;
+      --text: #e0e0e0;
+      --subtext: #bbb;
+      --border: #444;
+      --error: #d9534f;
+      --error-hover: #b3403a;
+      --success: #81c784;
+    }
+
+    /* بقية التنسيقات كما هي ... */
+
+    /* ========== تنسيق الطباعة ========== */
+    @media print {
+      @page {
+        size: A4 landscape;
+        margin: 10mm;
+      }
+
+      body {
+        zoom: 85%;
+        background-color: white !important;
+        color: black !important;
+        gap: 10px;
+      }
+
+      #leftSide, #rightSide {
+        width: 49%;
+        padding: 10px;
+        background-color: white !important;
+        color: black !important;
+        border: none !important;
+        box-shadow: none !important;
+      }
+
+      button, .link-button, .notice {
+        display: none !important;
+      }
+
+      input, .result {
+        border: 1px solid #ccc !important;
+        background-color: white !important;
+        color: black !important;
+      }
     }
   </style>
-</head>
-<body>
-  <div id="leftSide">
-    <div class="horizontal-row">
-      <div>
-        <label class="icon-label"><i class="fas fa-gauge"></i> عداد جديد</label>
-        <input type="text" id="newCounter" placeholder="اكتب عداد جديد" autocomplete="off" />
-      </div>
-      <div>
-        <label class="icon-label"><i class="fas fa-calendar-plus"></i> تاريخ التركيب</label>
-        <input type="text" id="installationDate" placeholder="dd-mm-yyyy" autocomplete="off" />
-      </div>
-    </div>
-    <label class="icon-label"><i class="fas fa-arrow-right-to-bracket"></i> من:</label>
-    <input type="text" id="startDate" placeholder="dd-mm-yyyy" autocomplete="off" >
-    <label class="icon-label"><i class="fas fa-arrow-left"></i> إلى:</label>
-    <input type="text" id="endDate" placeholder="dd-mm-yyyy" autocomplete="off" >
-    <button onclick="calculateDifference()"><i class="fas fa-calendar-days"></i> عدد الأيام</button>
-    <div class="notice" id="diffNotice"></div>
-    <div id="diffResults" style="display: none;">
-      <div class="result" onclick="copyText(this)">عدد السنوات<br><b id="years"></b></div>
-      <div class="result" onclick="copyText(this)">عدد الشهور<br><b id="months"></b></div>
-      <div class="result" onclick="copyText(this)">عدد الأيام<br><b id="days"></b></div>
-    </div>
-    <label class="icon-label"><i class="fas fa-bolt"></i> الاستهلاك:</label>
-    <input type="number" id="divisionInput" autocomplete="off">
-    <button onclick="calculateDivision()"><i class="fas fa-divide"></i> احسب المتوسط</button>
-    <div class="result" id="divisionResult" style="display: none;" onclick="copyText(this)"></div>
-    <div class="notice" id="divNotice"></div>
-    <button id="clearFieldsBtn" onclick="clearFields()"><i class="fas fa-broom"></i> مسح الحقول</button>
-    <a class="link-button" href="second.html"><i class="fas fa-arrow-rotate-right"></i> الانتقال إلى حاسبة الضرب</a>
-  </div>
-  <div id="rightSide">
-    <label class="icon-label"><i class="fas fa-sign-in-alt"></i> من:</label>
-    <input type="text" id="rightFromDate" placeholder="dd-mm-yyyy" autocomplete="off">
-    <label class="icon-label"><i class="fas fa-sign-out-alt"></i> إلى:</label>
-    <input type="text" id="rightToDate" placeholder="dd-mm-yyyy" autocomplete="off">
-    <label class="icon-label"><i class="fas fa-clock"></i> عدد الأيام:</label>
-    <input type="text" id="rightDaysCount" readonly>
-    <label class="icon-label"><i class="fas fa-tachometer-alt"></i> آخر قراءة صحيحة:</label>
-    <input type="number" id="lastCorrectReading" placeholder="أدخل آخر قراءة" autocomplete="off">
-    <label class="icon-label"><i class="fas fa-chart-line"></i> المتوسط:</label>
-    <input type="number" id="average" placeholder="أدخل المتوسط" autocomplete="off">
-    <label class="icon-label"><i class="fas fa-burn"></i> الاستهلاك:</label>
-    <input type="number" id="consumption" readonly>
-    <label class="icon-label"><i class="fas fa-retweet"></i> القراءة عند الاستبدال:</label>
-    <input type="number" id="replacementReading" readonly>
-    <button id="clearFieldsBtnRight" onclick="clearFieldsRight()"><i class="fas fa-broom"></i> مسح الحقول</button>
-  </div>
   <script>
     function parseDate(text) {
       const parts = text.trim().split("-");
