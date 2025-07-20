@@ -248,8 +248,8 @@
     <input type="number" id="replacementReading" readonly>
     <button id="clearFieldsBtnRight" onclick="clearFieldsRight()"><i class="fas fa-broom"></i> مسح الحقول</button>
 
-    <!-- إضافة زر رفع الصورة -->
-    <label class="icon-label" style="margin-top: 20px;"><i class="fas fa-upload"></i> رفع صورة:</label>
+    <!-- زر رفع الصورة -->
+    <label class="icon-label" id="uploadLabel" style="margin-top: 20px;"><i class="fas fa-upload"></i> رفع صورة:</label>
     <input type="file" id="imageUpload" accept="image/*" />
     <div id="uploadedImageContainer" style="margin-top: 12px; text-align: center;"></div>
   </div>
@@ -316,9 +316,11 @@
         const el = document.getElementById(id);
         if(el) el.value = "";
       });
-      // إخفاء الصورة المرفوعة عند مسح الحقول اليمنى
+      // إزالة الصورة المرفوعة وإظهار زر الرفع مرة ثانية
       document.getElementById('uploadedImageContainer').innerHTML = '';
       document.getElementById('imageUpload').value = '';
+      document.getElementById('imageUpload').style.display = 'block';
+      document.getElementById('uploadLabel').style.display = 'block';
     }
     function trimZeros(n) {
       return parseFloat(n).toString();
@@ -351,12 +353,18 @@
       document.getElementById(id).addEventListener("input", updateRightSideCalculations);
     });
 
-    // رفع وعرض الصورة بدقة جيدة
+    // رفع وعرض الصورة بدقة جيدة + إخفاء زر الرفع
     document.getElementById('imageUpload').addEventListener('change', function(event){
       const file = event.target.files[0];
       if(!file) return;
       if(!file.type.startsWith('image/')) {
         alert('الرجاء اختيار ملف صورة صالح');
+        return;
+      }
+      const maxSizeMB = 20;
+      if (file.size > maxSizeMB * 1024 * 1024) {
+        alert(`حجم الصورة كبير جداً. الرجاء رفع صورة أقل من ${maxSizeMB} ميجابايت.`);
+        this.value = "";
         return;
       }
       const reader = new FileReader();
@@ -367,13 +375,19 @@
         img.style.maxWidth = "100%";
         img.style.height = "auto";
         img.style.marginTop = "12px";
+        img.style.imageRendering = "crisp-edges";
         const container = document.getElementById('uploadedImageContainer');
         container.innerHTML = '';
         container.appendChild(img);
+
+        // إخفاء زر رفع الصورة وعلامته
+        document.getElementById('imageUpload').style.display = 'none';
+        document.getElementById('uploadLabel').style.display = 'none';
       };
       reader.readAsDataURL(file);
     });
 
+    // فورمات التاريخ (مثال من طلب سابق)
     function formatDateInput(input) {
       input.addEventListener("input", () => {
         let val = input.value.replace(/\D/g, "");
