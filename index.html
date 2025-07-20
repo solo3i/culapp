@@ -30,17 +30,16 @@
       display: flex;
       height: 100vh;
       gap: 24px;
-      font-size: 1.15em;
+      font-size: 1.05em; /* صغرت الحجم شوي */
     }
     #leftSide, #rightSide {
       width: 50%;
-      padding: 32px;
+      padding: 24px;
       display: flex;
       flex-direction: column;
-      gap: 20px;
+      gap: 16px;
       background-color: var(--panel);
       border-radius: 12px;
-      overflow-y: auto;
     }
     label {
       font-weight: 600;
@@ -49,10 +48,10 @@
       color: var(--text);
       user-select: none;
     }
-    input[type="text"], input[type="date"], input[type="number"], input[type="file"] {
+    input[type="text"], input[type="date"], input[type="number"] {
       width: 100%;
-      padding: 12px;
-      font-size: 1.1em;
+      padding: 10px;
+      font-size: 1em;
       background-color: #333;
       border: 1.5px solid var(--border);
       color: var(--text);
@@ -62,7 +61,7 @@
       transition: border-color 0.3s;
       box-shadow: none;
     }
-    input[type="text"]:focus, input[type="date"]:focus, input[type="number"]:focus, input[type="file"]:focus {
+    input[type="text"]:focus, input[type="date"]:focus, input[type="number"]:focus {
       border-color: var(--primary);
       outline: none;
     }
@@ -75,15 +74,15 @@
       background-color: var(--primary);
       color: white;
       border: none;
-      padding: 14px;
-      font-size: 1.2em;
+      padding: 12px;
+      font-size: 1.1em;
       border-radius: 12px;
       cursor: pointer;
       transition: background-color 0.3s, transform 0.15s ease;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 12px;
+      gap: 10px;
     }
     button:hover {
       background-color: var(--primary-hover);
@@ -91,10 +90,10 @@
     }
     .result {
       background-color: #333;
-      padding: 14px;
+      padding: 12px;
       border-radius: 10px;
       border: 1.5px solid var(--border);
-      font-size: 1.3em;
+      font-size: 1.2em;
       text-align: center;
       direction: ltr;
       cursor: pointer;
@@ -105,7 +104,7 @@
     }
     .notice {
       color: var(--error);
-      font-size: 0.95em;
+      font-size: 0.9em;
       min-height: 1.3em;
       user-select: none;
     }
@@ -113,7 +112,7 @@
       display: inline-block;
       background-color: var(--primary);
       color: white;
-      padding: 14px 20px;
+      padding: 12px 18px;
       border-radius: 12px;
       text-decoration: none;
       font-weight: 700;
@@ -126,7 +125,7 @@
     }
     .horizontal-row {
       display: flex;
-      gap: 18px;
+      gap: 14px;
     }
     .horizontal-row > div {
       flex: 1;
@@ -136,13 +135,12 @@
     .icon-label i {
       margin-left: 6px;
       color: var(--primary);
-      font-size: 0.85em;
     }
     #clearFieldsBtn, #clearFieldsBtnRight {
       background-color: var(--error);
       color: white;
-      font-size: 1.15em;
-      padding: 14px 0;
+      font-size: 1.1em;
+      padding: 12px 0;
       border-radius: 12px;
       margin-top: 6px;
       width: 100%;
@@ -153,60 +151,79 @@
       transform: scale(1.03);
     }
 
-    /* طباعة منسقة */
-    @page {
-      size: landscape;
-      margin: 5mm;
+    /* رفع الصورة */
+    #imageUploadContainer {
+      margin-top: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
     }
+    #uploadLabel {
+      cursor: pointer;
+      background-color: var(--primary);
+      color: white;
+      padding: 10px 16px;
+      border-radius: 12px;
+      font-weight: 600;
+      transition: background-color 0.3s, transform 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    #uploadLabel:hover {
+      background-color: var(--primary-hover);
+      transform: scale(1.05);
+    }
+    #imageUpload {
+      display: none;
+    }
+    #uploadedImageContainer img {
+      max-width: 100%;
+      height: auto;
+      margin-top: 12px;
+      border-radius: 8px;
+      float: right;
+      margin-left: 12px;
+      margin-bottom: 12px;
+      image-rendering: crisp-edges;
+      max-height: 300px; /* زيادة ارتفاع الصورة قليلاً */
+    }
+
+    /* طباعه */
     @media print {
       body {
         display: block !important;
-        font-size: 11pt !important;
-        gap: 12px !important;
         height: auto !important;
-        color: black !important;
+        font-size: 0.9em !important;
+        direction: rtl !important;
         background: white !important;
-        transform: none !important;
+        color: black !important;
       }
       #leftSide, #rightSide {
-        display: inline-block !important;
-        vertical-align: top;
-        width: 48% !important;
-        padding: 10px !important;
-        margin: 0 !important;
+        width: 100% !important;
+        padding: 0 !important;
+        margin: 0 0 20px 0 !important;
         background: none !important;
         border-radius: 0 !important;
+        box-shadow: none !important;
         page-break-inside: avoid !important;
-        break-inside: avoid !important;
-        float: right;
-      }
-      #uploadedImageContainer {
         display: block !important;
-        margin-top: 10px;
-        max-width: 80% !important;
-        height: auto !important;
-        page-break-inside: avoid !important;
-        break-inside: avoid !important;
-        text-align: right;
       }
-      #uploadedImageContainer img {
-        max-width: 100% !important;
-        height: auto !important;
-        image-rendering: crisp-edges !important;
-        float: right;
-        border-radius: 8px;
-        margin-left: 12px;
-        margin-bottom: 12px;
-      }
-      /* اخفاء أزرار المسح والانتقال */
-      #clearFieldsBtn,
-      #clearFieldsBtnRight,
-      .link-button {
+      #clearFieldsBtn, #clearFieldsBtnRight,
+      .link-button,
+      #uploadLabel,
+      #imageUpload {
         display: none !important;
       }
-      * {
-        page-break-inside: avoid !important;
-        break-inside: avoid !important;
+      #uploadedImageContainer img {
+        max-height: 200px !important;
+        max-width: 100% !important;
+        float: none !important;
+        margin: 0 auto 12px auto !important;
+        display: block !important;
+      }
+      .horizontal-row {
+        display: block !important;
       }
     }
   </style>
@@ -257,12 +274,15 @@
     <input type="number" id="consumption" readonly>
     <label class="icon-label"><i class="fas fa-retweet"></i> القراءة عند الاستبدال:</label>
     <input type="number" id="replacementReading" readonly>
-    <button id="clearFieldsBtnRight" onclick="clearFieldsRight()"><i class="fas fa-broom"></i> مسح الحقول</button>
 
-    <!-- زر رفع الصورة -->
-    <label class="icon-label" id="uploadLabel" style="margin-top: 20px;"><i class="fas fa-upload"></i> رفع صورة:</label>
-    <input type="file" id="imageUpload" accept="image/*" />
-    <div id="uploadedImageContainer" style="margin-top: 12px;"></div>
+    <!-- رفع الصورة -->
+    <div id="imageUploadContainer">
+      <label for="imageUpload" id="uploadLabel"><i class="fas fa-upload"></i> رفع صورة</label>
+      <input type="file" id="imageUpload" accept="image/*" />
+      <div id="uploadedImageContainer"></div>
+    </div>
+
+    <button id="clearFieldsBtnRight" onclick="clearFieldsRight()"><i class="fas fa-broom"></i> مسح الحقول</button>
   </div>
 
   <script>
@@ -327,11 +347,10 @@
         const el = document.getElementById(id);
         if(el) el.value = "";
       });
-      // إزالة الصورة المرفوعة وإظهار زر الرفع مرة ثانية
-      document.getElementById('uploadedImageContainer').innerHTML = '';
-      document.getElementById('imageUpload').value = '';
+      // بعد مسح الحقول نرجع نظهر زر رفع الصورة وعلامته
       document.getElementById('imageUpload').style.display = 'block';
-      document.getElementById('uploadLabel').style.display = 'block';
+      document.getElementById('uploadLabel').style.display = 'inline-flex';
+      document.getElementById('uploadedImageContainer').innerHTML = '';
     }
     function trimZeros(n) {
       return parseFloat(n).toString();
@@ -368,11 +387,14 @@
     document.getElementById('imageUpload').addEventListener('change', function(event){
       const file = event.target.files[0];
       if(!file) return;
+
+      // تحقق نوع الملف صورة فقط
       if(!file.type.startsWith('image/')) {
         alert('الرجاء اختيار ملف صورة صالح');
         this.value = "";
         return;
       }
+      // تحقق حجم الصورة (20 ميجا كحد أقصى)
       const maxSizeMB = 20;
       if (file.size > maxSizeMB * 1024 * 1024) {
         alert(`حجم الصورة كبير جداً. الرجاء رفع صورة أقل من ${maxSizeMB} ميجابايت.`);
@@ -387,23 +409,20 @@
         img.style.maxWidth = "100%";
         img.style.height = "auto";
         img.style.marginTop = "12px";
-        img.style.imageRendering = "crisp-edges";
-        img.style.float = "right";
         img.style.borderRadius = "8px";
+        img.style.float = "right";
         img.style.marginLeft = "12px";
         img.style.marginBottom = "12px";
         const container = document.getElementById('uploadedImageContainer');
-        container.innerHTML = '';
+        container.innerHTML = "";
         container.appendChild(img);
-
-        // إخفاء زر رفع الصورة وعلامته
-        document.getElementById('imageUpload').style.display = 'none';
+        // إخفاء زر الرفع بعد رفع الصورة
         document.getElementById('uploadLabel').style.display = 'none';
+        document.getElementById('imageUpload').style.display = 'none';
       };
       reader.readAsDataURL(file);
     });
 
-    // فورمات التاريخ
     function formatDateInput(input) {
       input.addEventListener("input", () => {
         let val = input.value.replace(/\D/g, "");
