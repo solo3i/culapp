@@ -183,7 +183,7 @@
       #uploadedImageContainer {
         display: block !important;
         margin-top: 10px;
-        max-width: 100% !important;
+        max-width: 60% !important; /* تقليل حجم الصورة في الطباعة */
         height: auto !important;
         page-break-inside: avoid !important;
         break-inside: avoid !important;
@@ -192,6 +192,12 @@
         max-width: 100% !important;
         height: auto !important;
         image-rendering: crisp-edges !important;
+      }
+      /* اخفاء أزرار المسح والانتقال */
+      #clearFieldsBtn,
+      #clearFieldsBtnRight,
+      .link-button {
+        display: none !important;
       }
       * {
         page-break-inside: avoid !important;
@@ -353,7 +359,7 @@
       document.getElementById(id).addEventListener("input", updateRightSideCalculations);
     });
 
-    // رفع وعرض الصورة بدقة جيدة + إخفاء زر الرفع
+    // رفع الصورة مع إخفاء زر الرفع بعد اختيار صورة
     document.getElementById('imageUpload').addEventListener('change', function(event){
       const file = event.target.files[0];
       if(!file) return;
@@ -387,7 +393,7 @@
       reader.readAsDataURL(file);
     });
 
-    // فورمات التاريخ (مثال من طلب سابق)
+    // فورمات التاريخ
     function formatDateInput(input) {
       input.addEventListener("input", () => {
         let val = input.value.replace(/\D/g, "");
