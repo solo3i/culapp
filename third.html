@@ -428,8 +428,8 @@
           if (parseInt(month) > 12) month = "12";
         } else if (val.length === 3) {
           const monthDigit = val.slice(2, 3);
-          // استثناء: لا تضيف صفر تلقائي إذا كان الرقم هو 1
-          if (monthDigit === "1") {
+          // استثناء: لا تضيف صفر تلقائي إذا كان الرقم هو 1 أو 0
+          if (monthDigit === "1" || monthDigit === "0") {
             month = monthDigit;
           } else {
             month = "0" + monthDigit;
