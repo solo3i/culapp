@@ -423,10 +423,17 @@
           day = val[0]; // لا تضيف صفر تلقائي
         }
         // الشهر
-        if (val.length >= 3) {
+        if (val.length >= 4) {
           month = val.slice(2, 4);
-          if (month.length === 1) month = "0" + month;
           if (parseInt(month) > 12) month = "12";
+        } else if (val.length === 3) {
+          const monthDigit = val.slice(2, 3);
+          // استثناء: لا تضيف صفر تلقائي إذا كان الرقم هو 1
+          if (monthDigit === "1") {
+            month = monthDigit;
+          } else {
+            month = "0" + monthDigit;
+          }
         }
         // السنة
         if (val.length > 4) {
@@ -496,11 +503,11 @@
               </div>
               <div class="result-row">
                 <span class="result-label">الاستهلاك:</span>
-                <span class="result-value">${consumption.toFixed(1)}</span>
+                <span class="result-value">${Math.round(consumption)}</span>
               </div>
               <div class="result-row">
                 <span class="result-label">المجموع:</span>
-                <span class="result-value result-total">${total.toFixed(1)}</span>
+                <span class="result-value result-total">${Math.round(total)}</span>
               </div>
             </div>
           `;
