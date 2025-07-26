@@ -236,6 +236,56 @@
       display: block;
     }
 
+    .action-buttons {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      margin: 20px 0;
+    }
+
+    .action-btn {
+      background: #007acc;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 11px;
+      font-size: 1.1em;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      min-width: 60px;
+      position: relative;
+    }
+
+    .action-btn:hover {
+      background: #005a9e;
+      transform: scale(1.05);
+    }
+
+    .action-btn.active {
+      background: #4caf50;
+      box-shadow: 0 0 15px rgba(76, 175, 80, 0.5);
+      transform: scale(1.1);
+    }
+
+    .action-btn.active::after {
+      content: "✓";
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      background: #fff;
+      color: #4caf50;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+    }
+
     @media print {
       .hamburger-menu,
       .menu-overlay {
@@ -310,6 +360,10 @@
         padding: 8px !important;
         font-size: 0.85em !important;
       }
+      
+      .action-buttons {
+        display: none !important;
+      }
     }
 
     @media (max-width: 768px) {
@@ -323,6 +377,15 @@
 
       .container {
         max-width: 480px;
+      }
+      
+      .action-buttons {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .action-btn {
+        width: 200px;
       }
     }
   </style>
@@ -359,6 +422,13 @@
         <label for="lastReading">آخر قراءة:</label>
         <input type="number" id="lastReading" placeholder="اكتب آخر قراءة">
       </div>
+    </div>
+
+    <!-- الأزرار الجديدة -->
+    <div class="action-buttons">
+      <button class="action-btn" onclick="handleButtonClick(6)">6</button>
+      <button class="action-btn" onclick="handleButtonClick(7)">7</button>
+      <button class="action-btn" onclick="handleButtonClick(8)">8</button>
     </div>
 
     <!-- قسم التواريخ والنتائج -->
@@ -467,13 +537,88 @@
       return new Date(y, m - 1, d);
     }
 
+    let digitLimit = 0; // متغير لحفظ حد الأرقام
+    let activeButton = null; // متغير لحفظ الزر النشط
+
+    function handleButtonClick(number) {
+      // إزالة التفعيل من جميع الأزرار
+      document.querySelectorAll('.action-btn').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      
+      // تفعيل الزر المضغوط
+      event.target.classList.add('active');
+      activeButton = number;
+      
+      digitLimit = number;
+      console.log(`تم تحديد حد الأرقام إلى ${number} أرقام`);
+      
+      // إظهار رسالة تأكيد مؤقتة
+      const maxValue = Math.pow(10, number) - 1;
+      showConfirmation(`تم تحديد الحد إلى ${number} أرقام (0 - ${maxValue.toLocaleString()})`);
+      
+      calculateAll(); // إعادة حساب النتائج بالحد الجديد
+    }
+
+    function showConfirmation(message) {
+      // إنشاء عنصر الرسالة
+      const confirmMsg = document.createElement('div');
+      confirmMsg.textContent = message;
+      confirmMsg.style.cssText = `
+        position: fixed;
+        top: 100px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #4caf50;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-weight: bold;
+        z-index: 1200;
+        animation: fadeInOut 2s ease-in-out;
+      `;
+      
+      // إضافة الأنيميشن
+      const style = document.createElement('style');
+      style.textContent = `
+        @keyframes fadeInOut {
+          0% { opacity: 0; transform: translateX(-50%) translateY(-10px); }
+          20% { opacity: 1; transform: translateX(-50%) translateY(0); }
+          80% { opacity: 1; transform: translateX(-50%) translateY(0); }
+          100% { opacity: 0; transform: translateX(-50%) translateY(-10px); }
+        }
+      `;
+      document.head.appendChild(style);
+      
+      // إضافة الرسالة للصفحة
+      document.body.appendChild(confirmMsg);
+      
+      // إزالة الرسالة بعد ثانيتين
+      setTimeout(() => {
+        document.body.removeChild(confirmMsg);
+        document.head.removeChild(style);
+      }, 2000);
+    }
+
+    function formatResult(value) {
+      if (digitLimit === 0) {
+        return Math.round(value); // بدون حد
+      }
+      
+      const roundedValue = Math.round(value);
+      const maxValue = Math.pow(10, digitLimit); // مثل 1000000 للرقم 6
+      
+      // استخدام باقي القسمة للدوران مثل عداد الكهرباء
+      return roundedValue % maxValue;
+    }
+
     function calculateAll() {
       const fromDate = parseDate(document.getElementById("from").value);
       const avg = parseFloat(document.getElementById("average").value);
       const last = parseFloat(document.getElementById("lastReading").value);
 
       let prevDate = fromDate;
-      let accumulatedConsumption = 0; // تراكم الاستهلاك
+      let accumulatedConsumption = 0;
 
       for (let i = 1; i <= 4; i++) {
         const toDate = parseDate(document.getElementById("to" + i).value);
@@ -485,14 +630,11 @@
             continue;
           }
           
-          // الفرق بين كل تاريخ "إلى" والتاريخ السابق فقط
           const days = Math.floor((toDate - prevDate) / (1000 * 60 * 60 * 24));
           const consumption = days * avg;
           
-          // تراكم الاستهلاك
           accumulatedConsumption += consumption;
           
-          // المجموع: آخر قراءة + تراكم الاستهلاك
           const total = (isNaN(last) ? 0 : last) + accumulatedConsumption;
           
           resultBox.innerHTML = `
@@ -503,11 +645,11 @@
               </div>
               <div class="result-row">
                 <span class="result-label">الاستهلاك:</span>
-                <span class="result-value">${Math.round(consumption)}</span>
+                <span class="result-value">${formatResult(consumption)}</span>
               </div>
               <div class="result-row">
                 <span class="result-label">المجموع:</span>
-                <span class="result-value result-total">${Math.round(total)}</span>
+                <span class="result-value result-total">${formatResult(total)}</span>
               </div>
             </div>
           `;
