@@ -522,12 +522,15 @@
       let result = input / days;
       result = Number.isInteger(result) ? result.toString() : result.toFixed(1);
       const box = document.getElementById("divisionResult");
-      box.innerText = result;
+      // عرض كلمة "المتوسط:" جنب الرقم
+      box.innerText = "المتوسط: " + result;
       box.style.display = "block";
     }
     
     function copyText(element) {
-      const text = element.innerText.split("\n")[1] || element.innerText;
+      // انسخ فقط القيمة الرقمية إن وجدت (صحيح للأرقام الصحيحة والعشرية).
+      const match = element.innerText.match(/-?\d+(?:\.\d+)?/);
+      const text = match ? match[0] : element.innerText;
       navigator.clipboard.writeText(text);
     }
     
